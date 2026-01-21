@@ -79,6 +79,86 @@ This design supports both:
 - Null-safe change detection logic
 - Insert and update paths clearly separated
 
+- ## 🔄 Slowly Changing Dimension (SCD) Strategy
+
+This project implements different Slowly Changing Dimension (SCD) strategies
+based on business requirements and data volatility.
+
+### 🧍 dim_customer — SCD Type 2 (History Preserved)
+Customer attributes can change over time (address, phone, email).
+To preserve historical accuracy:
+
+- A new row is inserted when a change is detected
+- Previous record is expired using `end_dt`
+- `is_current` flag identifies the active record
+- Surrogate key changes for each version
+
+**Change Detection Logic**
+- Null-safe comparison using default placeholders
+- Only non-key attributes are compared
+- Business key (`customer_id`) is never updated
+
+**Why SCD Type 2?**
+Historical customer attributes must be retained to ensure:
+- Correct past sales reporting
+- Accurate customer behavior analysis
+
+---
+
+### 📦 dim_product — SCD Type 1 (Overwrite Changes)
+Product attributes are corrected or updated without historical tracking.
+
+- Existing records are updated in place
+- Surrogate key remains unchanged
+- No history maintained
+
+**Change Detection Logic**
+- Null-safe comparison for all descriptive attributes
+- `product_id` is treated as immutable business key
+- Surrogate key is never updated
+
+**Why SCD Type 1?**
+Product changes do not require historical tracking
+and correcting data is preferred over retaining old values.
+
+---
+
+### 🏬 dim_store — SCD Type 1 (Overwrite Changes)
+Store location details may change due to data corrections.
+
+- Updates overwrite existing values
+- No historical versions created
+- Surrogate key remains constant
+
+---
+
+### 📅 dim_date — Static Dimension
+The date dimension is pre-generated and does not change.
+
+- Loaded once
+- No updates required
+- Used for all time-based analysis
+
+---
+
+## 🔐 Surrogate Key Handling Rules
+
+- Surrogate keys are system-generated
+- Never updated once assigned
+- Used only for fact table relationships
+- Business keys are used for lookups only
+
+---
+
+## 🧠 Design Principles Applied
+
+- Business keys identify records
+- Surrogate keys join facts to dimensions
+- Change detection excludes business keys
+- Audit columns managed at target level
+- Insert and update logic clearly separated
+
+
 ---
 
 ## ✅ Data Validation
