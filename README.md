@@ -249,6 +249,78 @@ The date dimension is pre-generated and does not change.
 - Insert and update logic clearly separated
 
 
+## ♻️ Incremental Load Strategy & Audit Columns
+
+This project implements a **batch-based incremental loading strategy**
+to efficiently process only new and changed records.
+
+---
+
+### 🧾 Batch Control
+
+- Each load is driven by a `batch_id`
+- Batch ID format: `YYYYMMDD_HHMMSS`
+- Used across:
+  - Staging
+  - Dimensions
+  - Facts
+
+✔ Enables traceability and reprocessing
+
+---
+
+### 🕒 Audit Columns Used
+
+All tables include standard audit columns:
+
+- `insert_dt` — record creation timestamp
+- `update_dt` — last update timestamp
+- `load_user` — ETL execution user
+- `batch_id` — identifies the load batch
+- `file_name` — source file name
+- `file_row_number` — row position in source file
+
+---
+
+### 🔄 Staging Layer Incremental Logic
+
+- Data loaded per file per batch
+- Duplicate file detection prevents reloading
+- File-level validation before processing
+
+✔ Ensures raw data consistency
+
+---
+
+### 🧱 Dimension Incremental Logic
+
+- Business keys used for lookups
+- New records → **INSERT**
+- Changed records → **UPDATE (SCD logic)**
+- Unchanged records → **IGNORED**
+
+✔ Prevents unnecessary updates
+
+---
+
+### 📊 Fact Incremental Logic
+
+- Facts loaded only for current batch
+- Foreign keys resolved via dimension lookups
+- Records skipped if dimension keys are missing
+
+✔ Guarantees referential integrity
+
+---
+
+## 🎯 Benefits of This Strategy
+
+- Scalable for large data volumes
+- Easy restart and rollback
+- Clear data lineage
+- Production-ready design
+
+
 ---
 
 ## ✅ Data Validation
