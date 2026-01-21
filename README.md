@@ -79,6 +79,96 @@ This design supports both:
 - Null-safe change detection logic
 - Insert and update paths clearly separated
 
+
+## 🔁 Taskflow Orchestration & Load Order
+
+This project follows a **controlled, dependency-driven taskflow design**
+to ensure data consistency and referential integrity.
+
+### 🥉 Stage Layer Load (Parallel)
+All staging tables are loaded in parallel since they are independent.
+
+- stg.stg_customers
+- stg.stg_products
+- stg.stg_stores
+- stg.stg_orders
+- stg.stg_order_items
+
+✔ Purpose:
+- Raw data ingestion
+- No dependencies
+- Fast and scalable
+
+---
+
+### 🥈 Dimension Layer Load (Sequential)
+Dimension tables are loaded **after staging** and follow dependency order.
+
+1. **dim_date**
+   - Loaded first (static dimension)
+
+2. **dim_customer**
+   - SCD Type 2 logic
+   - Depends on `stg_customers`
+
+3. **dim_product**
+   - SCD Type 1 logic
+   - Depends on `stg_products`
+
+4. **dim_store**
+   - SCD Type 1 logic
+   - Depends on `stg_stores`
+
+✔ Purpose:
+- Generate surrogate keys
+- Handle slowly changing dimensions
+- Prepare lookup-ready dimensions
+
+---
+
+### 🥇 Fact Layer Load (Sequential)
+Fact tables are loaded **only after all dimensions are successfully loaded**.
+
+1. **fact_orders**
+   - Grain: One row per order
+   - Depends on:
+     - dim_date
+     - dim_customer
+     - dim_store
+
+2. **fact_order_items**
+   - Grain: One row per product per order
+   - Depends on:
+     - dim_date
+     - dim_customer
+     - dim_product
+     - dim_store
+
+✔ Purpose:
+- Maintain referential integrity
+- Prevent orphan foreign keys
+- Ensure accurate aggregations
+
+---
+
+## 🚦 Error Handling & Restartability
+
+- Each layer runs in its own taskflow
+- Failure in one layer prevents downstream execution
+- Taskflows can be restarted from the failed step
+- Ensures production-grade reliability
+
+---
+
+## ✅ Why This Orchestration Strategy?
+
+- Prevents partial data loads
+- Guarantees dimension availability before facts
+- Supports incremental and full loads
+- Aligns with enterprise ETL best practices
+
+
+
 - ## 🔄 Slowly Changing Dimension (SCD) Strategy
 
 This project implements different Slowly Changing Dimension (SCD) strategies
