@@ -34,6 +34,44 @@ handle incremental loads, and ensure data quality through validations.
 
 ---
 
+## 🧱 Fact Grain & Modeling Decisions
+
+### fact_orders
+- Grain: **One row per order**
+- Each record represents a completed customer order
+- Measures:
+  - total_amount
+- Dimensions linked:
+  - dim_date
+  - dim_customer
+  - dim_store
+
+### fact_order_items
+- Grain: **One row per product per order**
+- An order with multiple products generates multiple rows
+- Measures:
+  - quantity
+  - unit_price
+  - line_total
+- Dimensions linked:
+  - dim_date
+  - dim_customer
+  - dim_product
+  - dim_store
+
+### Why two fact tables?
+Separating order-level and item-level data avoids:
+- Data duplication
+- Incorrect aggregations
+- Performance issues
+
+This design supports both:
+- High-level sales analysis (fact_orders)
+- Detailed product analysis (fact_order_items)
+
+
+---
+
 ## 🔄 ETL Design
 - Separate staging, dimension, and fact loads
 - Surrogate keys for all dimensions
