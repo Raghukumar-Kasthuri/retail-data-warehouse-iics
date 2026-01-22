@@ -998,4 +998,26 @@ HAVING COUNT(*) > 1;
 SELECT *
 FROM fact.fact_order_items
 WHERE insert_dt IS NULL;
+-----------------------------------------------------------
+
+/* =====================================================
+   FACT-TO-FACT BUSINESS SANITY CHECK
+   Order total vs sum of order items
+   Expected result: 0 rows
+   ===================================================== */
+
+-- Order total vs order items total check
+SELECT 
+    f.order_id,
+    f.total_amount,
+    SUM(i.line_total) AS item_total
+FROM fact.fact_orders f
+JOIN fact.fact_order_items i
+    ON f.order_id = i.order_id
+GROUP BY f.order_id, f.total_amount
+HAVING f.total_amount <> SUM(i.line_total);
+
+
+
+
 
