@@ -169,7 +169,7 @@ Fact tables are loaded **only after all dimensions are successfully loaded**.
 
 
 
-- ## 🔄 Slowly Changing Dimension (SCD) Strategy
+## 🔄 Slowly Changing Dimension (SCD) Strategy
 
 This project implements different Slowly Changing Dimension (SCD) strategies
 based on business requirements and data volatility.
@@ -339,6 +339,19 @@ All tables include standard audit columns:
 - IICS mappings & taskflows
 - SQL validations
 - Production-ready ETL design
+
+---
+
+
+## 📈 How This Project Is Used
+This data warehouse enables business users and analysts to:
+- Track daily and monthly sales trends
+- Identify top-performing products and stores
+- Analyze customer lifetime value and repeat purchases
+- Ensure accurate reporting using validated, audit-ready data
+
+All analytical queries are built on well-defined fact and dimension tables,
+following industry-standard dimensional modeling practices.
 
 ---
 
