@@ -8,5 +8,4 @@ dimension and fact processing, into the SQL Server data warehouse.
 
 diagrams/Retail_Data_Warehouse_Architecture.png
 
-![Retail DW Architecture](diagrams/retail_dw_architecture.png)
 
