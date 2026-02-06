@@ -6,6 +6,6 @@ The following diagram represents the end-to-end architecture of the Retail
 Data Warehouse, showing the flow from source CSV files through IICS staging,
 dimension and fact processing, into the SQL Server data warehouse.
 
-diagrams/Retail_Data_Warehouse_Architecture.png
+[diagrams/Retail_Data_Warehouse_Architecture.png](https://github.com/Raghukumar-Kasthuri/retail-data-warehouse-iics/blob/main/diagrams/Retail_Data_Warehouse_Architecture.png?raw=true)
 
 
