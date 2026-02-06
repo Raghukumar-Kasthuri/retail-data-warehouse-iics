@@ -285,7 +285,7 @@ All tables include standard audit columns:
 ### 🔄 Staging Layer Incremental Logic
 
 - Data loaded per file per batch
-- Duplicate file detection prevents reloading
+- Duplicate file detection prevents accidental reprocessing of the same file.
 - File-level validation before processing
 
 ✔ Ensures raw data consistency
@@ -307,7 +307,7 @@ All tables include standard audit columns:
 
 - Facts loaded only for current batch
 - Foreign keys resolved via dimension lookups
-- Records skipped if dimension keys are missing
+- Records are rejected or logged if corresponding dimension keys are missing.
 
 ✔ Guarantees referential integrity
 
