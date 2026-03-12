@@ -10,3 +10,6 @@ Here is my folder name and image file name
 [diagrams/Retail_Data_Warehouse_Architecture.png](https://github.com/Raghukumar-Kasthuri/retail-data-warehouse-iics/blob/main/diagrams/Retail_Data_Warehouse_Architecture.png?raw=true)
 
 
+https://github.com/Raghukumar-Kasthuri/retail-data-warehouse-iics/blob/main/diagrams/Retail_Sales_Data_Warehouse_Architecture.png
+
+[diagrams/Retail_Data_Warehouse_Architecture.png](https://github.com/Raghukumar-Kasthuri/retail-data-warehouse-iics/blob/main/diagrams/Retail_Sales_Data_Warehouse_Architecture.png)
