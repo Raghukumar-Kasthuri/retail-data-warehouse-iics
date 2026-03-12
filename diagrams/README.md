@@ -1,8 +1,8 @@
-Architecture diagrams for the Retail Data Warehouse project.
+Architecture diagrams for the Retail Sales Data Warehouse project.
 
 ## 🖼️ Data Warehouse Architecture Diagram
 
-The following diagram represents the end-to-end architecture of the Retail
+The following diagram represents the end-to-end architecture of the Retail Sales
 Data Warehouse, showing the flow from source CSV files through IICS staging,
 dimension and fact processing, into the SQL Server data warehouse.
 
